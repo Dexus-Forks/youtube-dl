@@ -18,7 +18,7 @@ from .version import __version__
 def detect_variant():
     if hasattr(sys, 'frozen'):
         if getattr(sys, '_MEIPASS', None):
-            return f'win_exe'
+            return 'win_exe'
         return 'py2exe'
     elif isinstance(globals().get('__loader__'), zipimporter):
         return 'zip'
@@ -55,13 +55,13 @@ def run_update(ydl):
         ydl.report_error(msg, tb='' if expected else None)
 
     def report_unable(action, expected=False):
-        report_error(f'Unable to {action}', expected)
+        report_error('Unable to %s' % action, expected)
 
     def report_permission_error(file):
-        report_unable(f'write to {file}; Try running as administrator', True)
+        report_unable('write to %s; Try running as administrator' % file, True)
 
     def report_network_error(action, delim=';'):
-        report_unable(f'{action}{delim} Visit  https://github.com/ytdl-patched/youtube-dl/releases/latest', True)
+        report_unable('%s%s Visit  https://github.com/ytdl-patched/youtube-dl/releases/latest' % (action, delim), True)
 
     def calc_sha256sum(path):
         h = hashlib.sha256()
@@ -83,9 +83,9 @@ def run_update(ydl):
         return tuple(map(int, version_str.split('.')))
 
     version_id = version_info['tag_name']
-    ydl.to_screen(f'Latest version: {version_id}, Current version: {__version__}')
+    ydl.to_screen('Latest version: %s, Current version: %s' % (version_id, __version__))
     if version_tuple(__version__) >= version_tuple(version_id):
-        ydl.to_screen(f'youtube-dl is up to date ({__version__})')
+        ydl.to_screen('youtube-dl is up to date (%s)' % __version__)
         return
 
     err = is_non_updateable()
@@ -96,8 +96,8 @@ def run_update(ydl):
     # though symlinks are not followed so that we need to do this manually
     # with help of realpath
     filename = compat_realpath(sys.executable if hasattr(sys, 'frozen') else sys.argv[0])
-    ydl.to_screen(f'Current Build Hash {calc_sha256sum(filename)}')
-    ydl.to_screen(f'Updating to version {version_id} ...')
+    ydl.to_screen('Current Build Hash %s' % calc_sha256sum(filename))
+    ydl.to_screen('Updating to version %s ...' % version_id)
 
     version_labels = {
         'zip_3': '',
@@ -151,7 +151,7 @@ def run_update(ydl):
             with open(filename + '.new', 'wb') as outf:
                 outf.write(newcontent)
         except (IOError, OSError):
-            return report_permission_error(f'{filename}.new')
+            return report_permission_error('%s.new' % filename)
 
         expected_sum = get_sha256sum(variant, arch)
         if not expected_sum:
@@ -210,7 +210,7 @@ def run_update(ydl):
         ydl.to_screen('Updated youtube-dl to version %s; Restart youtube-dl to use the new version' % version_id)
         return
 
-    assert False, f'Unhandled variant: {variant}'
+    assert False, ('Unhandled variant: %s' % variant)
 
 
 # Deprecated
