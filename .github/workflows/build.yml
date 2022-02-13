@@ -108,11 +108,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    # lower python version as much as possible
-    - name: Set up Python 3.6
+    # reason to choose 3.4: https://media.discordapp.net/attachments/807245652072857613/942409077701619742/unknown.png
+    - name: Set up Python 3.4
       uses: actions/setup-python@v2
       with:
-          python-version: '3.6'
+        python-version: '3.4'
+        architecture: 'x86'
     - name: Install packages
       run: python -m pip install --upgrade pip setuptools wheel py2exe
     - name: Bump version
