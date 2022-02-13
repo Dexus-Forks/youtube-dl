@@ -10,7 +10,7 @@ import traceback
 from zipimport import zipimporter
 
 from .compat import compat_realpath
-from .utils import encode_compat_str, Popen, write_string
+from .utils import encode_compat_str, write_string
 
 from .version import __version__
 
@@ -175,7 +175,7 @@ def run_update(ydl):
             return
         try:
             # Continues to run in the background
-            Popen(
+            subprocess.Popen(
                 'ping 127.0.0.1 -n 5 -w 1000 & del /F "%s.old"' % filename,
                 shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             ydl.to_screen('Updated youtube-dl to version %s' % version_id)
