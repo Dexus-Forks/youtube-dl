@@ -29,5 +29,5 @@ __version__ = {VERSION!r}
 with open('youtube_dl/version.py', 'wt') as f:
     f.write(VERSION_FILE)
 
-print('::set-output name=ytdlp_version::' + VERSION)
+print('::set-output name=ytdl_version::' + VERSION)
 print(f'\nVersion = {VERSION}')

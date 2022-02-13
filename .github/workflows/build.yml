@@ -38,12 +38,6 @@ jobs:
     - name: Push to release
       id: push_release
       run: echo ::set-output name=head_sha::$(git rev-parse HEAD)
-    - name: Update master
-      id: push_master
-      env:
-        PUSH_VERSION_COMMIT: ${{ secrets.PUSH_VERSION_COMMIT }}
-      if: "env.PUSH_VERSION_COMMIT != ''"
-      run: git push origin ${{ github.event.ref }}
     - name: Get Changelog
       id: get_changelog
       run: |
