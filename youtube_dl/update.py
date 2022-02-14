@@ -101,10 +101,8 @@ def run_update(ydl):
 
     version_labels = {
         'zip_3': '',
-        'win_exe_64': '.exe',
-        'py2exe_64': '_min.exe',
-        'win_exe_32': '_x86.exe',
-        'mac_exe_64': '_macos',
+        'py2exe_32': '.exe',
+        'py2exe_64': '.exe',
     }
 
     def get_bin_info(bin_or_exe, version):
