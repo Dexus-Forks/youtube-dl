@@ -216,10 +216,6 @@ def update_self(to_screen, verbose, opener):
 
     printfn = to_screen
 
-    write_string(
-        'DeprecationWarning: "youtube_dl.update.update_self" is deprecated and may be removed in a future version. '
-        'Use "youtube_dl.update.run_update(ydl)" instead\n')
-
     class FakeYDL():
         _opener = opener
         to_screen = printfn
