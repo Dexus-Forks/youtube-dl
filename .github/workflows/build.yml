@@ -73,37 +73,37 @@ jobs:
         files: |
           youtube-dl
           youtube-dl.tar.gz
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
-        release_name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
-        commitish: ${{ steps.push_release.outputs.head_sha }}
-        body: This is a daily build of youtube-dl.
-        draft: false
-        prerelease: false
-    - name: Upload youtube-dl Unix binary
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./youtube-dl
-        asset_name: youtube-dl
-        asset_content_type: application/octet-stream
-    - name: Upload Source tar
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./youtube-dl.tar.gz
-        asset_name: youtube-dl-${{ steps.bump_version.outputs.ytdl_version }}.tar.gz
-        asset_content_type: application/gzip
+    # - name: Create Release
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
+    #     release_name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
+    #     commitish: ${{ steps.push_release.outputs.head_sha }}
+    #     body: This is a daily build of youtube-dl.
+    #     draft: false
+    #     prerelease: false
+    # - name: Upload youtube-dl Unix binary
+    #   id: upload-release-asset
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./youtube-dl
+    #     asset_name: youtube-dl
+    #     asset_content_type: application/octet-stream
+    # - name: Upload Source tar
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./youtube-dl.tar.gz
+    #     asset_name: youtube-dl-${{ steps.bump_version.outputs.ytdl_version }}.tar.gz
+    #     asset_content_type: application/gzip
 
   build_windows:
     runs-on: windows-2022
@@ -147,16 +147,16 @@ jobs:
         prerelease: false
         files: |
           youtube-dl.exe
-    - name: Upload youtube-dl.exe Windows binary
-      id: upload-release-windows
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.build_unix.outputs.upload_url }}
-        asset_path: ./youtube-dl.exe
-        asset_name: youtube-dl.exe
-        asset_content_type: application/vnd.microsoft.portable-executable
+    # - name: Upload youtube-dl.exe Windows binary
+    #   id: upload-release-windows
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ needs.build_unix.outputs.upload_url }}
+    #     asset_path: ./youtube-dl.exe
+    #     asset_name: youtube-dl.exe
+    #     asset_content_type: application/vnd.microsoft.portable-executable
     - name: Get SHA2-256SUMS for youtube-dl.exe
       id: sha256_win
       run: echo "sha256_win=$((Get-FileHash youtube-dl.exe -Algorithm SHA256).Hash.ToLower())" >> $GITHUB_OUTPUT
@@ -180,16 +180,16 @@ jobs:
         echo "${{ env.SHA256_BIN }}  youtube-dl" >> SHA2-256SUMS
         echo "${{ env.SHA256_TAR }}  youtube-dl-${YTDL_VERSION}.tar.gz" >> SHA2-256SUMS
         echo "${{ env.SHA256_WIN }}  youtube-dl.exe" >> SHA2-256SUMS
-    - name: Upload 256SUMS file
-      id: upload-sums
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.build_unix.outputs.upload_url }}
-        asset_path: ./SHA2-256SUMS
-        asset_name: SHA2-256SUMS
-        asset_content_type: text/plain
+    # - name: Upload 256SUMS file
+    #   id: upload-sums
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ needs.build_unix.outputs.upload_url }}
+    #     asset_path: ./SHA2-256SUMS
+    #     asset_name: SHA2-256SUMS
+    #     asset_content_type: text/plain
     - name: Make SHA2-512SUMS file
       env:
         SHA512_BIN: ${{ needs.build_unix.outputs.sha512_bin }}
@@ -199,16 +199,16 @@ jobs:
         echo "${{ env.SHA512_BIN }}  youtube-dl" >> SHA2-512SUMS
         echo "${{ env.SHA512_TAR }}  youtube-dl-${YTDL_VERSION}.tar.gz" >> SHA2-512SUMS
         echo "${{ env.SHA512_WIN }}  youtube-dl.exe" >> SHA2-512SUMS
-    - name: Upload 512SUMS file
-      id: upload-512sums
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.build_unix.outputs.upload_url }}
-        asset_path: ./SHA2-512SUMS
-        asset_name: SHA2-512SUMS
-        asset_content_type: text/plain
+    # - name: Upload 512SUMS file
+    #   id: upload-512sums
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ needs.build_unix.outputs.upload_url }}
+    #     asset_path: ./SHA2-512SUMS
+    #     asset_name: SHA2-512SUMS
+    #     asset_content_type: text/plain
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
