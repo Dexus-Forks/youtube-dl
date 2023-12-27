@@ -11,7 +11,8 @@ jobs:
     outputs:
       version_suffix: ${{ steps.version_suffix.outputs.version_suffix }}
       ytdl_version: ${{ steps.bump_version.outputs.ytdl_version }}
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      ytdl_head_sha: ${{ steps.push_release.outputs.head_sha }}
+     # upload_url: ${{ steps.create_release.outputs.upload_url }}
       sha256_bin: ${{ steps.sha256_bin.outputs.sha256_bin }}
       sha512_bin: ${{ steps.sha512_bin.outputs.sha512_bin }}
       sha256_tar: ${{ steps.sha256_tar.outputs.sha256_tar }}
@@ -141,7 +142,7 @@ jobs:
         token: ${{ secrets.GH_PAT }}
         tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
         name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
-        target_commitish: ${{ steps.push_release.outputs.head_sha }}
+        target_commitish: ${{ needs.build_unix.outputs.ytdl_head_sha }}
         body: This is a daily build of youtube-dl.
         draft: false
         prerelease: false
@@ -213,9 +214,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         token: ${{ secrets.GH_PAT }}
-        tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
-        name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
-        target_commitish: ${{ steps.push_release.outputs.head_sha }}
+        tag_name: ${{ needs.build_unix.outputs.ytdl_version }}
+        name: youtube-dl ${{ needs.build_unix.outputs.ytdl_version }}
+        target_commitish: ${{ needs.build_unix.outputs.ytdl_head_sha }}
         body: This is a daily build of youtube-dl.
         draft: false
         prerelease: false
