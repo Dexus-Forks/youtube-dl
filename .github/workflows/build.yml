@@ -60,7 +60,19 @@ jobs:
     - name: Get SHA2-512SUMS for youtube-dl.tar.gz
       id: sha512_tar
       run: echo "sha512_tar=$(sha512sum youtube-dl.tar.gz | awk '{print $1}')" >> $GITHUB_OUTPUT
-
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        token: ${{ secrets.GH_PAT }}
+        tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
+        name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
+        target_commitish: ${{ steps.push_release.outputs.head_sha }}
+        body: This is a daily build of youtube-dl.
+        draft: false
+        prerelease: false
+        files: |
+          youtube-dl
+          youtube-dl.tar.gz
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -123,6 +135,18 @@ jobs:
     #   run: python -m PyInstaller --onefile --console --distpath dist/ -n youtube-dl youtube_dl\__main__.py
     - name: Build EXE file
       run: python setup.py py2exe
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        token: ${{ secrets.GH_PAT }}
+        tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
+        name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
+        target_commitish: ${{ steps.push_release.outputs.head_sha }}
+        body: This is a daily build of youtube-dl.
+        draft: false
+        prerelease: false
+        files: |
+          youtube-dl.exe
     - name: Upload youtube-dl.exe Windows binary
       id: upload-release-windows
       uses: actions/upload-release-asset@v1
@@ -185,3 +209,16 @@ jobs:
         asset_path: ./SHA2-512SUMS
         asset_name: SHA2-512SUMS
         asset_content_type: text/plain
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        token: ${{ secrets.GH_PAT }}
+        tag_name: ${{ steps.bump_version.outputs.ytdl_version }}
+        name: youtube-dl ${{ steps.bump_version.outputs.ytdl_version }}
+        target_commitish: ${{ steps.push_release.outputs.head_sha }}
+        body: This is a daily build of youtube-dl.
+        draft: false
+        prerelease: false
+        files: |
+          SHA2-256SUMS
+          SHA2-512SUMS
